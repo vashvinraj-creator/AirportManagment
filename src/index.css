@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body, #root { height: 100%; }
+
+body {
+  background:
+    radial-gradient(1200px 600px at 10% -10%, rgba(15,184,109,0.10), transparent 60%),
+    radial-gradient(900px 500px at 100% 0%, rgba(15,184,109,0.07), transparent 55%),
+    #05100a;
+}
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #143826; border-radius: 8px; }
+::-webkit-scrollbar-thumb:hover { background: #1d4e34; }
+
+.scanline {
+  background-image: repeating-linear-gradient(0deg, rgba(15,184,109,0.035) 0px, rgba(15,184,109,0.035) 1px, transparent 1px, transparent 3px);
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+.pulse-dot { animation: pulse-dot 1.6s ease-in-out infinite; }
+
+@keyframes blip {
+  0% { transform: scale(0.9); opacity: 0.9; }
+  70% { transform: scale(2.2); opacity: 0; }
+  100% { opacity: 0; }
+}
+.blip::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: currentColor;
+  animation: blip 1.8s ease-out infinite;
+}
