@@ -1,7 +1,6 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useLiveTable } from '../lib/useLiveData'
 import { supabase } from '../lib/supabase'
-import { useEffect } from 'react'
 import { Card, DelayBadge, Empty, Spinner, fmtDateTime } from '../components/ui'
 
 export default function DelayTrace() {

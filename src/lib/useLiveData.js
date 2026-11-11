@@ -1,14 +1,19 @@
 import { useEffect, useState, useCallback } from 'react'
 import { supabase, AIRPORT_ID } from './supabase'
 
-/** Subscribes to a table scoped to the sim airport, with realtime updates. */
-export function useLiveTable(table, orderBy) {
+/**
+ * Subscribes to a table with realtime updates. By default scopes to the sim
+ * airport (pass `scoped: false` for join/lookup tables that have no
+ * `airport_id` column, like `crew_assignments`).
+ */
+export function useLiveTable(table, orderBy, { scoped = true } = {}) {
   const [rows, setRows] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
   const reload = useCallback(async () => {
-    let q = supabase.from(table).select('*').eq('airport_id', AIRPORT_ID)
+    let q = supabase.from(table).select('*')
+    if (scoped) q = q.eq('airport_id', AIRPORT_ID)
     if (orderBy) q = q.order(orderBy, { ascending: true })
     const { data, error } = await q
     if (error) setError(error)
@@ -17,7 +22,7 @@ export function useLiveTable(table, orderBy) {
       setRows(data || [])
     }
     setLoading(false)
-  }, [table, orderBy])
+  }, [table, orderBy, scoped])
 
   useEffect(() => {
     reload()

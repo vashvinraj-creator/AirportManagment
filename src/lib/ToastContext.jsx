@@ -28,7 +28,6 @@ export function ToastProvider({ children }) {
     success: (m) => push(m, 'success'),
     error: (m) => push(m, 'error', 7000),
     info: (m) => push(m, 'info'),
-    warn: (m) => push(m, 'warn'),
   }
 
   return (
@@ -45,8 +44,6 @@ export function ToastProvider({ children }) {
                 ? 'bg-danger/15 border-danger/40 text-danger'
                 : t.type === 'success'
                 ? 'bg-brand-500/15 border-brand-500/40 text-brand-200'
-                : t.type === 'warn'
-                ? 'bg-warn/15 border-warn/40 text-warn'
                 : 'bg-bg-raised border-line text-ink')
             }
           >

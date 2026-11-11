@@ -339,7 +339,6 @@ export default function Flights() {
           {flights.length === 0 && <Empty>No flights yet.</Empty>}
         </div>
       </Card>
-      <style>{`.input{background:#11291d;border:1px solid #143826;border-radius:0.5rem;padding:0.45rem 0.6rem;font-size:0.875rem;color:#e6fbf1}.input:focus{outline:none;border-color:#0a9459}`}</style>
     </div>
   )
 }
