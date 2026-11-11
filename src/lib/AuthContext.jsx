@@ -49,15 +49,6 @@ export function AuthProvider({ children }) {
     isAdmin: profile?.role === 'admin',
     isStaff: profile?.role === 'admin' || profile?.role === 'ground_staff',
     signOut: () => supabase.auth.signOut(),
-    refreshProfile: async () => {
-      if (!session?.user) return
-      const { data } = await supabase
-        .from('profiles')
-        .select('id, full_name, role, created_at')
-        .eq('id', session.user.id)
-        .single()
-      setProfile(data ?? null)
-    },
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

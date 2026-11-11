@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useLiveTable } from '../lib/useLiveData'
 import { supabase, AIRPORT_ID } from '../lib/supabase'
 import { validateGateClose, validateRunwayClose, validateCrewOffDuty } from '../lib/scheduler'
@@ -87,35 +87,12 @@ function ResourceColumn({ title, rows, statusOptions, onStatusChange, onAdd, onD
   )
 }
 
-function useCrewAssignments() {
-  const [rows, setRows] = useState([])
-
-  useEffect(() => {
-    let cancelled = false
-    const load = async () => {
-      const { data, error } = await supabase.from('crew_assignments').select('*')
-      if (!cancelled && !error) setRows(data || [])
-    }
-    load()
-    const channel = supabase
-      .channel('crew-assignments-changes')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'crew_assignments' }, () => load())
-      .subscribe()
-    return () => {
-      cancelled = true
-      supabase.removeChannel(channel)
-    }
-  }, [])
-
-  return { rows }
-}
-
 export default function Resources() {
   const { rows: gates } = useLiveTable('gates', 'name')
   const { rows: runways } = useLiveTable('runways', 'name')
   const { rows: crews } = useLiveTable('crews', 'name')
   const { rows: flights } = useLiveTable('flights', 'scheduled_departure')
-  const { rows: crewAssignments } = useCrewAssignments()
+  const { rows: crewAssignments } = useLiveTable('crew_assignments', null, { scoped: false })
   const { isStaff, isAdmin } = useAuth()
   const toast = useToast()
 

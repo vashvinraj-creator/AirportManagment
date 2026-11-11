@@ -23,6 +23,12 @@ export default function Team() {
   }, [])
 
   async function changeRole(profile, role) {
+    if (profile.id === user?.id && role !== 'admin') {
+      const sure = confirm(
+        "You're about to remove your own admin access. You won't be able to undo this yourself — another admin would have to restore it. Continue?"
+      )
+      if (!sure) return
+    }
     const { error } = await supabase.from('profiles').update({ role }).eq('id', profile.id)
     if (error) toast.error(error.message)
     else {
